@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
+import Title from "../components/Title";
 
 const GameScreen = () => {
     return (
         <SafeAreaView style={styles.gameScreen}>
-            <Text>Guess My Number</Text>
+            
             <View>
-                <Text>Opponent's Guess</Text>
+                <Title>Opponent's Guess</Title>
             </View>
             <View>
                 <Text>Higher or Lower?</Text>
@@ -27,6 +28,15 @@ export default GameScreen;
 const styles = StyleSheet.create({
     gameScreen: {
         flex: 1,
-        padding: 16,
+        padding: 24,
     },
+    title:{
+        fontSize: 24,
+        fontWeight: "bold",
+        color: "#ddb52f",
+        textAlign: "center",
+        borderWidth: 2,
+        borderColor: "#ddb52f",
+        padding: 12,
+    }
 });
