@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, SafeAreaView, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Alert,
+  FlatList,
+} from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Title from "../components/ui/Title";
 import { useState, useEffect } from "react";
@@ -6,6 +13,7 @@ import NumberContainer from "../components/game/NumberContainer";
 import Card from "../components/ui/Card";
 import CardTitle from "../components/ui/CardTitle";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import GuessLogItem from "../components/game/GuessLogItem";
 
 const generateRandomBetween = (min, max, exclude) => {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -21,10 +29,11 @@ const GameScreen = ({ userNumber, onGameOver }) => {
   );
   const [maxAllowedGuess, setMaxAllowedGuess] = useState(100);
   const [minAllowedGuess, setMinAllowedGuess] = useState(1);
+  const [rounds, setRounds] = useState([]);
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      onGameOver();
+      onGameOver(rounds.length);
     }
   }, [currentGuess, userNumber, onGameOver]);
 
@@ -54,12 +63,14 @@ const GameScreen = ({ userNumber, onGameOver }) => {
       setCurrentGuess(
         generateRandomBetween(minAllowedGuess, currentGuess, currentGuess)
       );
+      setRounds((prevRounds) => [currentGuess, ...prevRounds]);
     }
     if (direction === "higher") {
       setMinAllowedGuess(currentGuess);
       setCurrentGuess(
         generateRandomBetween(currentGuess, maxAllowedGuess, currentGuess)
       );
+      setRounds((prevRounds) => [currentGuess, ...prevRounds]);
     }
   }
   return (
@@ -82,8 +93,12 @@ const GameScreen = ({ userNumber, onGameOver }) => {
         </View>
       </Card>
 
-      <View>
-        <Text>Logger</Text>
+      <View style={styles.guessLogContainer}>
+        <FlatList
+          data={rounds}
+          renderItem={(itemData) => <GuessLogItem roundNumber={itemData.index + 1} guess={itemData.item} />}
+          keyExtractor={(item) => item}
+        />
       </View>
     </SafeAreaView>
   );
@@ -107,5 +122,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 24,
+  },
+  guessLogContainer: {
+    flex: 1,
+    padding: 24,
   },
 });
