@@ -1,7 +1,7 @@
 import { Text, StyleSheet } from "react-native";
 
-const CardTitle = ({ children }) => {
-    return <Text style={styles.title}>{children}</Text>;
+const CardTitle = ({ children,style }) => {
+    return <Text style={[styles.title,style]}>{children}</Text>;
 };
 
 export default CardTitle;
@@ -12,5 +12,5 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
         textAlign: "center",
-      },
+      }, 
 });
